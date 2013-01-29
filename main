@@ -1,0 +1,23 @@
+clear;
+
+% image segmentation of a pie from a blue conveyor belt 
+H = imread('image.bmp');
+I = rgb2hsv(H);
+justsign = I;
+ithresh = 50;
+dim = size(I(:,:,1));
+for i=1:dim(1)
+        for j=1:dim(2)
+            if (I(i,j,3)<0.3) justsign(i,j,:) = [0,0,0];
+            else justsign(i,j,:) = [1,1,1];
+            end
+        end
+end
+figure(1);
+image(justsign);
+
+% smoothing of the segmentedimage
+IM1 = justsign;
+IM2 = imerode(IM1,[1,1,1;1,1,1;1,1,1]);
+IM2 = imdilate(IM1,[1,1,1;1,1,1;1,1,1]);
+imshow(IM2);
